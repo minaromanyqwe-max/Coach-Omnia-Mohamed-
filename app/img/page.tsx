@@ -84,7 +84,6 @@ export default function CustomerReviews() {
           </StatCard>
         </StatsWrapper>
 
-        {/* FIX: Removed 'as={Link}', now it acts as a native link element cleanly */}
         <CTALink href="tel:+201021996070">
           ابدأ رحلتك الآن
         </CTALink>
@@ -104,9 +103,11 @@ const Section = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden; /* لمنع أي عنصر من الخروج عن حدود الشاشة */
 
-  font-family: "Cairo", sans-serif;
+  font-family: 'Cairo', sans-serif;
   direction: rtl;
+  width: 100%;
 
   @media (max-width: 600px) {
     padding: 40px 16px;
@@ -121,12 +122,16 @@ const Container = styled.div`
 const TopContent = styled.div`
   text-align: center;
   margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const MiniBadge = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px; /* مسافة بسيطة بين الإيموجي والكتابة */
 
   padding: 8px 18px;
   border-radius: 999px;
@@ -146,6 +151,7 @@ const Title = styled.h1`
   font-size: 54px;
   font-weight: 900;
   margin: 0;
+  line-height: 1.3; /* حماية الحروف العربية الطويلة من التداخل */
 
   span {
     background: linear-gradient(135deg,#60a5fa,#a855f7);
@@ -154,11 +160,11 @@ const Title = styled.h1`
   }
 
   @media(max-width:768px){
-    font-size: 32px;
+    font-size: 36px;
   }
 
   @media(max-width:480px){
-    font-size: 26px;
+    font-size: 28px;
   }
 `;
 
@@ -172,30 +178,25 @@ const SubTitle = styled.p`
 
 const CardsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
 
   @media(max-width:480px){
-    grid-template-columns: 1fr;
+    /* تفادي اختفاء الكروت أو صغرها على الشاشات الضيقة جداً */
+    grid-template-columns: 1fr; 
     gap: 18px;
   }
 `;
 
 const ReviewCard = styled.div`
   position: relative;
-
   background: rgba(255,255,255,.04);
   border: 1px solid rgba(255,255,255,.08);
-
   border-radius: 28px;
-
   padding: 26px;
-
   overflow: hidden;
-
   backdrop-filter: blur(10px);
-
-  transition: .35s ease;
+  transition: transform .35s ease, border-color .35s ease;
 
   &:hover{
     transform: translateY(-6px);
@@ -207,34 +208,30 @@ const Glow = styled.div`
   position: absolute;
   width: 160px;
   height: 160px;
-
   background: rgba(96,165,250,.12);
-
   filter: blur(70px);
-
   top: -70px;
-  left: -70px;
+  right: -70px; 
 `;
 
 const UserRow = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin-bottom: 20px;
 `;
 
 const Avatar = styled.img`
   width: 72px;
   height: 72px;
-
   border-radius: 22px;
   object-fit: cover;
-
   border: 2px solid rgba(255,255,255,.1);
 `;
 
 const UserInfo = styled.div`
+  text-align: right; /* التأكيد على محاذاة النص لليمين داخل الكارت */
+  
   h3{
     color: white;
     margin: 0;
@@ -246,42 +243,38 @@ const UserInfo = styled.div`
     color: #60a5fa;
     font-size: 13px;
     font-weight: 700;
+    display: inline-block;
+    margin-top: 4px;
   }
 `;
 
 const ReviewText = styled.p`
   color: #dbe4ee;
-
   line-height: 2;
   font-size: 15px;
-
   margin: 0;
+  text-align: right; /* محاذاة النص لليمين للغة العربية */
 `;
 
 const Stars = styled.div`
   margin-top: 20px;
-
   color: #facc15;
-
   font-size: 20px;
-  letter-spacing: 4px;
+  display: flex; 
+  gap: 4px; /* استبدال letter-spacing بـ gap لأن الـ spacing في الـ RTL أحياناً يسبب مشاكل في المتصفحات القديمة */
 `;
 
 const StatsWrapper = styled.div`
   margin-top: 60px;
-
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
 `;
 
 const StatCard = styled.div`
   background: rgba(255,255,255,.04);
-
   border: 1px solid rgba(255,255,255,.06);
-
   border-radius: 24px;
-
   padding: 28px;
   text-align: center;
 
@@ -290,6 +283,9 @@ const StatCard = styled.div`
     font-size: 42px;
     color: white;
     font-weight: 900;
+    direction: ltr; 
+    display: inline-block;
+    width: 100%;
   }
 
   p{
@@ -300,46 +296,27 @@ const StatCard = styled.div`
 
   @media(max-width:480px){
     padding: 20px;
-
-    h2{
-      font-size: 32px;
-    }
-
-    p{
-      font-size: 12px;
-    }
+    h2{ font-size: 32px; }
+    p{ font-size: 12px; }
   }
 `;
 
-/* FIX: Styled Next.js Link explicitly and added text-decoration reset */
 const CTALink = styled(Link)`
   margin: 50px auto 0;
-
   width: fit-content;
-
   display: flex;
   justify-content: center;
   align-items: center;
 
-  border: none;
-  outline: none;
-
-  padding: 18px 34px;
-
+  padding: 18px 40px; /* زيادة الـ padding الجانبي لتوازن النص العربي */
   border-radius: 18px;
-
   background: linear-gradient(135deg,#2563eb,#7c3aed);
 
   color: white;
   text-decoration: none;
-
   font-size: 18px;
   font-weight: 800;
-
-  cursor: pointer;
-
-  transition: .3s ease;
-
+  transition: transform .3s ease, box-shadow .3s ease;
   box-shadow: 0 15px 35px rgba(37,99,235,.35);
 
   &:hover{
@@ -349,10 +326,7 @@ const CTALink = styled(Link)`
 
 const Terms = styled.p`
   text-align: center;
-
   color: #64748b;
-
   margin-top: 18px;
-
   font-size: 12px;
 `;
