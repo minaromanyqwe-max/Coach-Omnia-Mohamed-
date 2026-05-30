@@ -4,6 +4,7 @@ import "./globals.css";
 import { NavbarDemo } from "./compount/Navbar";
 import Footer from "./compount/footer/page";
 import { cn } from "@/lib/utils";
+import StyledComponentsRegistry from "@/lib/registry";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -29,11 +30,13 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", cairo.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col text-white selection:bg-indigo-500/30 bg-[#3C4544]">
-        <NavbarDemo/>
-        <main className="flex-grow flex flex-col w-full relative z-0 pb-20">
-          {children}
-        </main>
-        <Footer/>
+        <StyledComponentsRegistry>
+          <NavbarDemo/>
+          <main className="flex-grow flex flex-col w-full relative z-0 pb-20">
+            {children}
+          </main>
+          <Footer/>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

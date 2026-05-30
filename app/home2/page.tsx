@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styled from "styled-components";
 import {
@@ -14,7 +16,7 @@ export default function HeroSection() {
         
         <div className="left">
           <img
-            src="img.jpeg"
+            src="/img.jpeg"
             alt="profile"
           />
         </div>

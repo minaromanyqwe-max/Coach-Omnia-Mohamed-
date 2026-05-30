@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styled from "styled-components";
 
@@ -10,7 +12,7 @@ const CoachProfile = () => {
         <div className="profile-card">
           <div className="avatar-section">
             <img 
-src="img.jpeg"
+src="/img.jpeg"
 alt="Coach Omnia Mohamed" 
               className="coach-avatar"
             />
