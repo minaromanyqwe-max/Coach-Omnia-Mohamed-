@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Cairo } from "next/font/google";
+import { Cairo, Geist } from "next/font/google";
 import "./globals.css";
 import { NavbarDemo } from "./compount/Navbar";
 import Footer from "./compount/footer/page";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const cairo = Cairo({
   variable: "--font-cairo",
@@ -23,7 +26,7 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", cairo.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col text-white selection:bg-indigo-500/30 bg-[#3C4544]">
         <NavbarDemo/>

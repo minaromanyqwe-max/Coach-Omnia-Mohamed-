@@ -49,7 +49,7 @@ export function NavbarDemo() {
           {/* Button */}
           <div className="flex items-center gap-4">
             <Link
-              href="#pricing"
+              href={{ pathname: '/checkout', query: { id: '67464019af1e4e9766624e75' } }}
               className="bg-gradient-to-r from-[#00c6ff] to-[#7b2ff7] text-white hover:opacity-90 transition-all duration-200 shadow-[0_0_15px_rgba(0,198,255,0.4)] active:scale-95 text-sm font-bold px-5 py-2.5 rounded-xl block"
             >
               Subscribe Now
@@ -100,14 +100,9 @@ export function NavbarDemo() {
             ))}
 
 <div className="flex w-full flex-col gap-4 pt-2">
-<a 
-  href="https://wa.me/201021996070" 
-  target="_blank" 
-  rel="noopener noreferrer"
-  className="w-full text-center bg-gradient-to-r from-[#00c6ff] to-[#7b2ff7] text-white py-3 font-bold rounded-xl text-base block"
->
+<Link href={{ pathname: '/checkout', query: { id: '67464019af1e4e9766624e75' } }} className="bg-gradient-to-r from-[#00c6ff] to-[#7b2ff7] text-white hover:opacity-90 transition-all duration-200 shadow-[0_0_15px_rgba(0,198,255,0.4)] active:scale-95 text-sm font-bold px-5 py-2.5 rounded-xl block text-center">
   Subscribe Now
-</a>
+</Link>
 </div>          </MobileNavMenu>
         </MobileNav>
       </Navbar>

@@ -84,14 +84,9 @@ export default function CustomerReviews() {
           </StatCard>
         </StatsWrapper>
 
-<CTAButton>
-<a 
-href="https://wa.me/201021996070?text=مرحباً"
-  target="_blank" 
-  rel="noopener noreferrer"
->
-ابدا رحله الان
-</a></CTAButton>
+<CTAButton as={Link} href={{ pathname: '/checkout', query: { id: '67464019af1e4e9766624e75' } }}>
+ابدا رحلة الان
+</CTAButton>
 
         <Terms>
           ⚠️ لا يوجد استرداد بعد 24 ساعة من الدفع
@@ -104,7 +99,7 @@ href="https://wa.me/201021996070?text=مرحباً"
 const Section = styled.section`
   min-height: 100vh;
   padding: 80px 20px;
-  background: transparent;
+  background: #0F172A;
   display: flex;
   justify-content: center;
   align-items: center;

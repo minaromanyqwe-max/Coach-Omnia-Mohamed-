@@ -55,7 +55,7 @@ Omnia Mohamed
 
 const StyledWrapper = styled.section`
   min-height: 100vh;
-  background: transparent;
+  background: #0f172a;
   display: flex;
   align-items: center;
   padding: 100px 20px 40px;

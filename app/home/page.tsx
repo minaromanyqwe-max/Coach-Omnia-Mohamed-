@@ -64,7 +64,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent;
+  background: #0F172A;
   padding: 20px;
   font-family: 'Cairo', sans-serif;
   direction: rtl;

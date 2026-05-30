@@ -72,7 +72,7 @@ const StyledWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent; /* لكي يندمج بسهولة في أي مكان بموقعك */
+  background: #0F172A; /* لكي يندمج بسهولة في أي مكان بموقعك */
   padding: 20px;
   font-family: 'Cairo', sans-serif;
   direction: rtl;
