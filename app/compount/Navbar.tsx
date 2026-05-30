@@ -49,7 +49,7 @@ export function NavbarDemo() {
           {/* Button */}
           <div className="flex items-center gap-4">
             <Link
-              href={{ pathname: '/checkout', query: { id: '67464019af1e4e9766624e75' } }}
+              href="/chick"
               className="bg-gradient-to-r from-[#00c6ff] to-[#7b2ff7] text-white hover:opacity-90 transition-all duration-200 shadow-[0_0_15px_rgba(0,198,255,0.4)] active:scale-95 text-sm font-bold px-5 py-2.5 rounded-xl block"
             >
               Subscribe Now

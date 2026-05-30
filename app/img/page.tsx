@@ -84,10 +84,11 @@ export default function CustomerReviews() {
           </StatCard>
         </StatsWrapper>
 
-<CTAButton as={Link} href={{ pathname: '/checkout', query: { id: '67464019af1e4e9766624e75' } }}>
-ابدا رحلة الان
-</CTAButton>
-
+        {/* FIX: Removed 'as={Link}', now it acts as a native link element cleanly */}
+        <CTALink href="tel:+201021996070">
+          ابدأ رحلتك الآن
+        </CTALink>
+        
         <Terms>
           ⚠️ لا يوجد استرداد بعد 24 ساعة من الدفع
         </Terms>
@@ -310,7 +311,8 @@ const StatCard = styled.div`
   }
 `;
 
-const CTAButton = styled.button`
+/* FIX: Styled Next.js Link explicitly and added text-decoration reset */
+const CTALink = styled(Link)`
   margin: 50px auto 0;
 
   width: fit-content;
@@ -329,6 +331,7 @@ const CTAButton = styled.button`
   background: linear-gradient(135deg,#2563eb,#7c3aed);
 
   color: white;
+  text-decoration: none;
 
   font-size: 18px;
   font-weight: 800;
