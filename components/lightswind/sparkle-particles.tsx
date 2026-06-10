@@ -1,14 +1,9 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import Particles, { ParticlesProvider } from "@tsparticles/react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import type { IOptions, RecursivePartial, MoveDirection, Engine } from "@tsparticles/engine";
-
-const initParticles = async (engine: Engine) => {
-  await loadSlim(engine);
-};
-
+import type { IOptions, RecursivePartial, MoveDirection } from "@tsparticles/engine"; // Import MoveDirection
 
 interface SparkleParticlesProps {
   className?: string;
@@ -57,6 +52,7 @@ export function SparkleParticles({
   particleShape = "circle",
   enableCollisions = false,
 }: SparkleParticlesProps) {
+  const [isEngineReady, setIsEngineReady] = useState(false);
   const [activeColor, setActiveColor] = useState("#000000");
   const instanceId = useId();
 
@@ -69,6 +65,12 @@ export function SparkleParticles({
     };
 
     setActiveColor(resolveThemeColor());
+
+    initParticlesEngine(async (engine) => {
+      await loadSlim(engine as any);
+    }).then(() => {
+      setIsEngineReady(true);
+    });
 
     const observer = new MutationObserver(() => {
       setActiveColor(resolveThemeColor());
@@ -170,12 +172,12 @@ export function SparkleParticles({
   };
 
   return (
-    <ParticlesProvider init={initParticles}>
+    isEngineReady && (
       <Particles
         id={instanceId}
         options={mergedOptions}
         className={className}
       />
-    </ParticlesProvider>
+    )
   );
 }

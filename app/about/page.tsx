@@ -1,61 +1,61 @@
 "use client";
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { useTranslations } from "next-intl";
 
 const CoachFeatures = () => {
+  const t = useTranslations("Features");
+
   return (
     <StyledWrapper id="features">
       <div className="features-container">
+        
         {/* العنوان الرئيسي للسكشن */}
         <div className="features-header">
-          <span className="subtitle">لماذا تشترك معي؟</span>
-          <h2>🚀 نظام متكامل يقودك لنهائيات هدفك 🚀</h2>
+          <span className="subtitle">{t("subtitle")}</span>
+          <h2>{t("title")}</h2>
         </div>
 
-        {/* شبكة المزايا (Features Grid) */}
+        {/* شبكة المزايا المطورة (Grid) */}
         <div className="features-grid">
           
-          {/* الميزة الأولى: المتابعة من ألف للياء */}
-          <div className="feature-card highlight">
+          {/* الميزة الأولى */}
+          <div className="feature-card highlight-gold">
+            <div className="card-glow"></div>
             <div className="icon-wrapper">🎯</div>
             <div className="card-content">
-              <h3>معاك من A to Z</h3>
-              <p>
-                بكون معاك خطوة بخطوة لحد ما توصل فعلاً لهدفك، واضمنلك نتيجة حقيقية بنسبة 100% لو التزمت بالخطة الحرفية المصممة ليك.
-              </p>
+              <h3>{t("c1Title")}</h3>
+              <p>{t("c1Desc")}</p>
             </div>
           </div>
 
-          {/* الميزة الثانية: التطبيق التفاعلي الخاص */}
-          <div className="feature-card app-feature">
+          {/* الميزة الثانية */}
+          <div className="feature-card highlight-cyan">
+            <div className="card-glow"></div>
             <div className="icon-wrapper">📱</div>
             <div className="card-content">
-              <h3>تطبيق تفاعلي خاص وخاص جداً</h3>
-              <p>
-                بقدملك خدمة مش موجودة عند أي حد! متابعتك بالكامل هتكون على <strong>أبليكشن تفاعلي خاص بيا</strong>، مخصص فقط بيني وبين العملاء بتوعي لمتابعة تطورك اليومي بدقة وسهولة.
-              </p>
+              <h3>{t("c2Title")}</h3>
+              <p>{t("c2Desc")}</p>
             </div>
           </div>
 
-          {/* الميزة الثالثة: المجتمع الخاص */}
-          <div className="feature-card">
+          {/* الميزة الثالثة */}
+          <div className="feature-card highlight-purple">
+            <div className="card-glow"></div>
             <div className="icon-wrapper">👥</div>
             <div className="card-content">
-              <h3>Community ودعم يومي</h3>
-              <p>
-                لينا <strong>Community خاص بينا</strong> على الأبليكشن، وبكون متواجد معاك بشكل يومي للإجابة على كل أسئلتك وتشجيعك المستمر.
-              </p>
+              <h3>{t("c3Title")}</h3>
+              <p>{t("c3Desc")}</p>
             </div>
           </div>
 
-          {/* الميزة الرابعة: أسلوب الحياة المرن */}
-          <div className="feature-card">
+          {/* الميزة الرابعة */}
+          <div className="feature-card highlight-green">
+            <div className="card-glow"></div>
             <div className="icon-wrapper">🥑</div>
             <div className="card-content">
-              <h3>أسلوب حياة بدون حرمان</h3>
-              <p>
-                بعلمك ازاي تعيش وتأكل بشكل صحي وبدون أي حرمان، هدفنا إن النظام يكون <strong>إسلوب حياة مستدام</strong> تعيش بيه علطول، مش مجرد تمرين يومين وخلاص!
-              </p>
+              <h3>{t("c4Title")}</h3>
+              <p>{t("c4Desc")}</p>
             </div>
           </div>
 
@@ -65,205 +65,236 @@ const CoachFeatures = () => {
   );
 };
 
+// --- Animations ---
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 // ==========================================
-// التنسيقات الاحترافية (Styled Components)
+// التنسيقات الاحترافية المطورة (Styled Components)
 // ==========================================
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #0F172A; /* لكي يندمج بسهولة في أي مكان بموقعك */
-  padding: 20px;
-  font-family: 'Cairo', sans-serif;
-  direction: rtl;
+  background: transparent; /* يندمج مع خلفية الـ Particles الثابتة */
+  padding: 100px 20px;
+  font-family: var(--font-cairo), sans-serif;
   width: 100%;
 
   .features-container {
     width: 100%;
-    max-width: 600px; /* متناسق مع كارت البروفايل */
+    max-width: 1200px; /* فتح العرض ليكون فخم وواسع */
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 48px;
   }
 
   /* الهيدر والعناوين */
   .features-header {
     text-align: center;
-    margin-bottom: 8px;
+    animation: ${fadeInUp} 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .features-header .subtitle {
-    color: #00c6ff;
-    font-size: 14px;
+    color: #6366f1;
+    font-size: 13px;
     font-weight: 800;
-    text-transform: uppercase;
     letter-spacing: 2px;
-    background: rgba(0, 198, 255, 0.15);
-    border: 1px solid rgba(0, 198, 255, 0.3);
-    padding: 6px 16px;
-    border-radius: 20px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 6px 18px;
+    border-radius: 100px;
     display: inline-block;
-    margin-bottom: 14px;
-    box-shadow: 0 0 15px rgba(0, 198, 255, 0.2);
+    margin-bottom: 16px;
   }
 
   .features-header h2 {
     color: #fff;
-    font-size: 24px;
-    font-weight: 900;
-    line-height: 1.5;
+    font-size: 36px;
+    font-weight: 800;
     margin: 0;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.5);
   }
 
-  /* شبكة الكروت الكبيرة والذكية */
+  /* شبكة الكروت الذكية (تحول لـ 2 في كل صف على الشاشات الكبيرة) */
   .features-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
   }
 
-  /* ستايل الكارت الموحد */
+  /* الاستايل الأساسي الموحد للكروت (Glassmorphism) */
   .feature-card {
-    background: rgba(22, 26, 38, 0.5);
-    backdrop-filter: blur(15px);
+    position: relative;
+    background: rgba(22, 26, 38, 0.4);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    padding: 20px;
+    border-radius: 28px;
+    padding: 32px;
     display: flex;
-    gap: 18px;
+    gap: 24px;
     align-items: flex-start;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* تأثير الإضاءة الخلفية المخفية داخل الكارت */
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle 120px at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.03), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+
+  .feature-card:hover .card-glow {
+    opacity: 1;
   }
 
   .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
   }
 
-  /* تمييز كارت الـ A to Z باللون الذهبي */
-  .feature-card.highlight {
-    border-right: 4px solid #f1c40f;
-    background: rgba(241, 196, 15, 0.05);
-    box-shadow: 0 10px 30px rgba(241, 196, 15, 0.1);
-  }
-  
-  .feature-card.highlight:hover {
-    border-color: #f1c40f;
-    box-shadow: 0 15px 40px rgba(241, 196, 15, 0.2);
-  }
-  
-  /* تمييز كارت الأبليكشن الخاص باللون المضيء */
-  .feature-card.app-feature {
-    border-right: 4px solid #00c6ff;
-    background: rgba(0, 198, 255, 0.05);
-    box-shadow: 0 10px 30px rgba(0, 198, 255, 0.1);
-  }
-
-  .feature-card.app-feature:hover {
-    border-color: #00c6ff;
-    box-shadow: 0 15px 40px rgba(0, 198, 255, 0.2);
-  }
-
-  /* ستايل الأيقونات */
+  /* ستايل حاوية الأيقونة */
   .icon-wrapper {
-    font-size: 28px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px;
-    border-radius: 16px;
+    font-size: 32px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 16px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: inset 0 0 15px rgba(255,255,255,0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.4s ease;
   }
 
   /* نصوص المحتوى داخلياً */
   .card-content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
   }
 
   .card-content h3 {
     color: #ffffff;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 700;
     margin: 0;
-  }
-
-  .feature-card.highlight .card-content h3 {
-    color: #f1c40f; /* لون ذهبي للعنوان المميّز */
-  }
-
-  .feature-card.app-feature .card-content h3 {
-    color: #00c6ff; /* لون نيون للعنوان المميّز */
+    transition: color 0.3s ease;
   }
 
   .card-content p {
     color: #94a3b8;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.7;
     margin: 0;
-    font-weight: 500;
-    text-align: justify;
+    font-weight: 400;
   }
 
   .card-content strong {
     color: #fff;
-    font-weight: 700;
+    font-weight: 600;
   }
 
-  @media (max-width: 600px) {
-    padding: 16px;
+  /* ---------------------------------------------------
+     🔥 تأثيرات الألوان النيون المخصصة لكل كارت عند الـ Hover
+  --------------------------------------------------- */
+  
+  /* 1. كارت التميز الذهبي */
+  .feature-card.highlight-gold:hover {
+    border-color: rgba(241, 196, 15, 0.3);
+    box-shadow: 0 30px 60px rgba(241, 196, 15, 0.08);
+  }
+  .feature-card.highlight-gold:hover .icon-wrapper {
+    background: rgba(241, 196, 15, 0.1);
+    border-color: #f1c40f;
+  }
+  .feature-card.highlight-gold:hover h3 { color: #f1c40f; }
 
-    .features-container {
-      max-width: 100%;
-      gap: 24px;
+  /* 2. كارت الأبليكشن السينان (Cyan) */
+  .feature-card.highlight-cyan:hover {
+    border-color: rgba(0, 198, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 198, 255, 0.08);
+  }
+  .feature-card.highlight-cyan:hover .icon-wrapper {
+    background: rgba(0, 198, 255, 0.1);
+    border-color: #00c6ff;
+  }
+  .feature-card.highlight-cyan:hover h3 { color: #00c6ff; }
+
+  /* 3. كارت الكوميونيتي الأرجواني */
+  .feature-card.highlight-purple:hover {
+    border-color: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 30px 60px rgba(168, 85, 247, 0.08);
+  }
+  .feature-card.highlight-purple:hover .icon-wrapper {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: #a855f7;
+  }
+  .feature-card.highlight-purple:hover h3 { color: #a855f7; }
+
+  /* 4. كارت التغذية الأخضر */
+  .feature-card.highlight-green:hover {
+    border-color: rgba(34, 197, 94, 0.3);
+    box-shadow: 0 30px 60px rgba(34, 197, 94, 0.08);
+  }
+  .feature-card.highlight-green:hover .icon-wrapper {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: #22c55e;
+  }
+  .feature-card.highlight-green:hover h3 { color: #22c55e; }
+
+
+  /* --- التجاوب وشاشات الموبايل (Responsive) --- */
+  @media (max-width: 992px) {
+    padding: 60px 20px;
+
+    .features-grid {
+      grid-template-columns: 1fr; /* تحويل لعمود واحد في الشاشات المتوسطة والصغيرة */
+      gap: 20px;
     }
 
     .features-header h2 {
-      font-size: 18px;
-    }
-
-    .features-header .subtitle {
-      font-size: 12px;
-      padding: 5px 12px;
-    }
-
-    .feature-card {
-      padding: 16px;
-      gap: 14px;
-      border-radius: 20px;
-    }
-
-    .icon-wrapper {
-      font-size: 22px;
-      padding: 10px;
-      border-radius: 12px;
-    }
-
-    .card-content h3 {
-      font-size: 14px;
-    }
-
-    .card-content p {
-      font-size: 12px;
+      font-size: 28px;
     }
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 576px) {
+    .features-header h2 {
+      font-size: 22px;
+    }
+
     .feature-card {
-      flex-direction: column;
+      padding: 24px;
+      gap: 16px;
+      flex-direction: column; /* جعل الأيقونة فوق النص بالموبايل الصغير لراحة العين */
       align-items: center;
       text-align: center;
     }
 
+    .icon-wrapper {
+      padding: 12px;
+      font-size: 26px;
+    }
+
+    .card-content h3 {
+      font-size: 18px;
+    }
+
     .card-content p {
-      text-align: center;
+      font-size: 13px;
     }
   }
 `;

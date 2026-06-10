@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const OMNIA_TEAM_IMAGES = [
   "WhatsApp Image 2026-05-25 at 12.54.09 AM.jpeg",
@@ -32,6 +33,7 @@ export default function OmniaTeam3DSlider({
   rotationDirection = "left",
   withMask = true,
 }: Slider3DProps) {
+  const t = useTranslations("Stories");
   const n = images.length;
   const prefersReducedMotion = useReducedMotion();
   const animationDuration = prefersReducedMotion ? duration * 4 : duration;
@@ -46,21 +48,15 @@ export default function OmniaTeam3DSlider({
     : {};
 
   return (
-    <div className="py-12 md:py-20 bg-#0F172A overflow-hidden">
+    <div className="py-12 md:py-20 bg-slate-50 dark:bg-[#0A0A0A] overflow-hidden relative" id="Stories">
       {/* عنوان القسم */}
       <div className="text-center mb-6 md:mb-10 px-4">
-        <h2 className="text-2xl md:text-3xl font-black text-amber-500 uppercase tracking-widest">
-          #TEAMOMNIA Success Stories
+        <h2 className="text-2xl md:text-4xl font-black text-amber-500 uppercase tracking-widest">
+          {t("title")}
         </h2>
-        <p className="text-sm text-slate-400 mt-2 italic">Real Results, Real People</p>
+        <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 mt-2 italic">{t("subtitle")}</p>
       </div>
 
-      {/* 
-        هنا الـ Media Queries الأساسية:
-        --card-width: حجم الكارت بيصغر عالموبايل عشان الدائرة متطلعش بره الشاشة (11em للموبايل، 14em للتابلت، 18em للشاشات الكبيرة)
-        --perspective: عمق الرؤية بيتظبط طردياً مع حجم الكروت عشان الأبعاد تفضل مظبوطة
-        h-[400px] للموبايل وتكبر لـ h-[600px] على الشاشات الكبيرة
-      */}
       <div
         className={`grid w-full h-[400px] sm:h-[500px] md:h-[600px] overflow-hidden place-items-center 
           [--card-width:11em] sm:[--card-width:14em] md:[--card-width:18em]
