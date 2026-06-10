@@ -25,13 +25,14 @@ export const metadata: Metadata = {
   description: "احصلي على أفضل نظام تدريب وغذاء مع أمنية محمد.",
 };
 
-export default async function RootLayout({
-  children,
-  params
-}: Readonly<{
+// 1. عوّد نفسك تفصل الـ Interface برة عشان الكود يكون أنضف وأسهل في القراءة
+interface LayoutProps {
   children: React.ReactNode;
-  params: { locale: string }
-}>) {
+  params: Promise<{ locale: string }>; // التعديل الجوهري هنا: تحويلها لـ Promise
+}
+
+export default async function RootLayout({ children, params }: LayoutProps) {
+  // 2. عمل الـ await اللي إنت عملته بشكل سليم تماماً
   const { locale } = await params;
   
   if (!routing.locales.includes(locale as any)) {
