@@ -155,12 +155,16 @@ const EMBEDDED_CSS = `
 }
 `;
 
+// ✅ الإصلاح الرئيسي: معالجة حالة الصورة الواحدة
 const getSlideClasses = (
     index: number,
     activeIndex: number,
     total: number,
     visibleCount: 3 | 5
 ): string => {
+    // ✅ لو صورة واحدة بس، اعرضها كـ "now" مباشرةً
+    if (total === 1) return index === 0 ? 'now' : '';
+
     let diff = index - activeIndex;
 
     if (diff > total / 2) diff -= total;
@@ -193,11 +197,13 @@ export default function CompleteThreeDCarousel({
     const total = slides.length;
 
     const [isDragging, setIsDragging] = useState(false);
-    const dragActive = useRef(false); // ref for reliable access inside handlers
+    const dragActive = useRef(false);
     const [startX, setStartX] = useState(0);
     const swipeThreshold = 40;
 
     const navigate = useCallback((direction: 'next' | 'prev') => {
+        // ✅ لو صورة واحدة بس، متحركش
+        if (total <= 1) return;
         setActiveIndex(current => {
             if (direction === 'next') return (current + 1) % total;
             return (current - 1 + total) % total;
@@ -212,6 +218,7 @@ export default function CompleteThreeDCarousel({
     }, []);
 
     const startAutoplay = useCallback(() => {
+        // ✅ لو صورة واحدة، مش محتاج autoplay
         if (!autoplay || total <= 1) return;
         stopAutoplay();
         autoplayIntervalRef.current = setInterval(() => {
@@ -224,13 +231,20 @@ export default function CompleteThreeDCarousel({
         return () => stopAutoplay();
     }, [startAutoplay, stopAutoplay]);
 
-    // --- Drag / Swipe handlers ---
+    // ✅ إعادة ضبط activeIndex لو الـ slides اتغيرت وعدد أقل من الـ index الحالي
+    useEffect(() => {
+        if (activeIndex >= total) {
+            setActiveIndex(0);
+        }
+    }, [total, activeIndex]);
+
     const handleStart = useCallback((clientX: number) => {
+        if (total <= 1) return; // ✅ لو صورة واحدة، متسمعش للـ drag
         dragActive.current = true;
         setIsDragging(true);
         setStartX(clientX);
         stopAutoplay();
-    }, [stopAutoplay]);
+    }, [stopAutoplay, total]);
 
     const handleEnd = useCallback((clientX: number) => {
         if (!dragActive.current) return;
@@ -283,7 +297,7 @@ export default function CompleteThreeDCarousel({
                                 key={slide.id}
                                 className={`cascade-slider_item ${slideClass}`}
                                 onClick={() => {
-                                    if (!isActive) setActiveIndex(index);
+                                    if (!isActive && total > 1) setActiveIndex(index);
                                 }}
                             >
                                 <a
@@ -309,6 +323,7 @@ export default function CompleteThreeDCarousel({
                     })}
                 </div>
 
+                {/* ✅ الأسهم بتظهر بس لو أكثر من صورة واحدة */}
                 {total > 1 && (
                     <>
                         <button
