@@ -15,23 +15,24 @@ interface ThreeDImageCarouselProps {
     delay?: number;
     pauseOnHover?: boolean;
     className?: string;
+    slides?: Slide[];
 }
 
 const DEFAULT_SLIDES: Slide[] = [
-{ 
-        id: 1, 
-        src: "/IMG_1785.JPG.jpeg", 
-        href: '#slide1' 
+    {
+        id: 1,
+        src: "/IMG_1785.JPG.jpeg",
+        href: '#slide1'
     },
-    { 
-        id: 2, 
-        src: "/IMG_4630.jpeg", 
-        href: '#slide2' 
+    {
+        id: 2,
+        src: "/IMG_4630.jpeg",
+        href: '#slide2'
     },
-    { 
-        id: 3, 
-        src: "/IMG_7462.jpeg", 
-        href: '#slide3' 
+    {
+        id: 3,
+        src: "/IMG_7462.jpeg",
+        href: '#slide3'
     },
 ];
 
@@ -40,9 +41,9 @@ const EMBEDDED_CSS = `
     position: relative;
     max-width: 1000px;
     margin: 0 auto;
-    z-index: 20; 
+    z-index: 20;
     user-select: none;
-    -webkit-user-select: none; 
+    -webkit-user-select: none;
     touch-action: pan-y;
     height: 350px;
 }
@@ -50,7 +51,7 @@ const EMBEDDED_CSS = `
 .cascade-slider_slides {
     position: relative;
     width: 100%;
-    height: 100%; 
+    height: 100%;
     overflow: hidden;
 }
 
@@ -58,47 +59,58 @@ const EMBEDDED_CSS = `
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateY(-50%) translateX(-50%) scale(0); 
-    transition: all 0.5s ease-in-out; 
+    transform: translateY(-50%) translateX(-50%) scale(0);
+    transition: all 0.5s ease-in-out;
     opacity: 0;
-    z-index: 1; 
-    cursor: grab; 
-}
-.cascade-slider_item.now {
-    cursor: default;
-}
-.cascade-slider_item:active {
-    cursor: grabbing;
+    z-index: 1;
+    cursor: grab;
 }
 
 .cascade-slider_item.now {
+    cursor: default;
     transform: translateY(-50%) translateX(-50%) scale(1);
     opacity: 1;
-    z-index: 5; 
+    z-index: 5;
 }
 
 .cascade-slider_item.next {
     transform: translateY(-50%) translateX(10%) scale(0.75);
     opacity: 0.7;
-    z-index: 4; 
+    z-index: 4;
 }
 
 .cascade-slider_item.prev {
     transform: translateY(-50%) translateX(-110%) scale(0.75);
     opacity: 0.7;
-    z-index: 4; 
+    z-index: 4;
 }
 
 .cascade-slider_item.next2 {
     transform: translateY(-50%) translateX(60%) scale(0.55);
     opacity: 0.4;
-    z-index: 2; 
+    z-index: 2;
 }
 
 .cascade-slider_item.prev2 {
     transform: translateY(-50%) translateX(-160%) scale(0.55);
     opacity: 0.4;
-    z-index: 2; 
+    z-index: 2;
+}
+
+/* Hide next2/prev2 when itemCount=3 */
+.cascade-slider_container[data-item-count="3"] .cascade-slider_item.next2,
+.cascade-slider_container[data-item-count="3"] .cascade-slider_item.prev2 {
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cascade-slider_item:not(.now) {
+    cursor: grab;
+}
+
+.cascade-slider_item:active {
+    cursor: grabbing;
 }
 
 .cascade-slider_arrow {
@@ -108,10 +120,10 @@ const EMBEDDED_CSS = `
     position: absolute;
     top: 50%;
     cursor: pointer;
-    z-index: 30; 
+    z-index: 30;
     transform: translateY(-50%);
-    width: 40px; 
-    height: 40px; 
+    width: 40px;
+    height: 40px;
     transition: all 0.3s ease;
 }
 
@@ -126,6 +138,7 @@ const EMBEDDED_CSS = `
     display: block;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     transition: filter 0.5s ease;
+    pointer-events: none;
 }
 
 .cascade-slider_item:not(.now) img {
@@ -137,25 +150,31 @@ const EMBEDDED_CSS = `
     .cascade-slider_slides img { width: 180px; height: 140px; }
     .cascade-slider_item.next { transform: translateY(-50%) translateX(5%) scale(0.7); }
     .cascade-slider_item.prev { transform: translateY(-50%) translateX(-105%) scale(0.7); }
-    .cascade-slider_item.next2, .cascade-slider_item.prev2 { display: none; }
+    .cascade-slider_item.next2,
+    .cascade-slider_item.prev2 { display: none; }
 }
 `;
 
-const getSlideClasses = (index: number, activeIndex: number, total: number, visibleCount: 3 | 5): string => {
+const getSlideClasses = (
+    index: number,
+    activeIndex: number,
+    total: number,
+    visibleCount: 3 | 5
+): string => {
     let diff = index - activeIndex;
-    
+
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
 
     if (diff === 0) return 'now';
     if (diff === 1) return 'next';
     if (diff === -1) return 'prev';
-    
+
     if (visibleCount === 5) {
         if (diff === 2) return 'next2';
         if (diff === -2) return 'prev2';
     }
-    
+
     return '';
 };
 
@@ -165,109 +184,118 @@ export default function CompleteThreeDCarousel({
     delay = 3,
     pauseOnHover = true,
     className = '',
+    slides = DEFAULT_SLIDES,
 }: ThreeDImageCarouselProps) {
     const t = useTranslations("Stories");
-    const slides = DEFAULT_SLIDES;
+
     const [activeIndex, setActiveIndex] = useState(0);
-    const autoplayIntervalRef = useRef<number | null>(null);
+    const autoplayIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const total = slides.length;
 
     const [isDragging, setIsDragging] = useState(false);
+    const dragActive = useRef(false); // ref for reliable access inside handlers
     const [startX, setStartX] = useState(0);
     const swipeThreshold = 40;
 
     const navigate = useCallback((direction: 'next' | 'prev') => {
         setActiveIndex(current => {
-            if (direction === 'next') {
-                return (current + 1) % total;
-            } else {
-                return (current - 1 + total) % total;
-            }
+            if (direction === 'next') return (current + 1) % total;
+            return (current - 1 + total) % total;
         });
     }, [total]);
 
-    const startAutoplay = useCallback(() => {
-        if (autoplay && total > 1) {
-            if (autoplayIntervalRef.current) clearInterval(autoplayIntervalRef.current);
-            autoplayIntervalRef.current = window.setInterval(() => {
-                navigate('next');
-            }, delay * 1000);
-        }
-    }, [autoplay, delay, navigate, total]);
-
     const stopAutoplay = useCallback(() => {
-        if (autoplayIntervalRef.current) {
+        if (autoplayIntervalRef.current !== null) {
             clearInterval(autoplayIntervalRef.current);
             autoplayIntervalRef.current = null;
         }
     }, []);
+
+    const startAutoplay = useCallback(() => {
+        if (!autoplay || total <= 1) return;
+        stopAutoplay();
+        autoplayIntervalRef.current = setInterval(() => {
+            navigate('next');
+        }, delay * 1000);
+    }, [autoplay, delay, navigate, stopAutoplay, total]);
 
     useEffect(() => {
         startAutoplay();
         return () => stopAutoplay();
     }, [startAutoplay, stopAutoplay]);
 
-    const handleMouseEnter = () => {
-        if (autoplay && pauseOnHover) stopAutoplay();
-    };
-
-    const handleExit = (clientX: number) => {
-        if (autoplay && pauseOnHover) startAutoplay();
-        if (isDragging) handleEnd(clientX);
-    };
-
-    const handleStart = (clientX: number) => {
+    // --- Drag / Swipe handlers ---
+    const handleStart = useCallback((clientX: number) => {
+        dragActive.current = true;
         setIsDragging(true);
         setStartX(clientX);
         stopAutoplay();
-    };
+    }, [stopAutoplay]);
 
-    const handleEnd = (clientX: number) => {
-        if (!isDragging) return;
-        const distance = clientX - startX;
-
-        if (Math.abs(distance) > swipeThreshold) {
-            if (distance < 0) {
-                navigate('next'); 
-            } else {
-                navigate('prev'); 
-            }
-        }
+    const handleEnd = useCallback((clientX: number) => {
+        if (!dragActive.current) return;
+        dragActive.current = false;
         setIsDragging(false);
-    };
+
+        const distance = clientX - startX;
+        if (Math.abs(distance) > swipeThreshold) {
+            navigate(distance < 0 ? 'next' : 'prev');
+        }
+
+        startAutoplay();
+    }, [navigate, startAutoplay, startX]);
+
+    const handleMouseLeave = useCallback((clientX: number) => {
+        if (dragActive.current) {
+            handleEnd(clientX);
+        } else if (pauseOnHover) {
+            startAutoplay();
+        }
+    }, [handleEnd, pauseOnHover, startAutoplay]);
 
     return (
         <div className="w-full min-h-[450px] flex flex-col items-center justify-center p-4 bg-background text-white rounded-xl">
             <style dangerouslySetInnerHTML={{ __html: EMBEDDED_CSS }} />
 
-            <h2 className="text-2xl font-bold mb-6 text-indigo-400">{t("title2")}</h2>
+            <h2 className="text-2xl font-bold mb-6 text-indigo-400">
+                {t("title2")}
+            </h2>
 
             <div
                 className={`cascade-slider_container ${className} w-full`}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={(e) => handleExit(e.clientX)}
+                data-item-count={itemCount}
+                onMouseEnter={() => {
+                    if (pauseOnHover) stopAutoplay();
+                }}
+                onMouseLeave={(e) => handleMouseLeave(e.clientX)}
                 onMouseDown={(e) => handleStart(e.clientX)}
-                onMouseUp={(e) => { handleEnd(e.clientX); startAutoplay(); }}
+                onMouseUp={(e) => handleEnd(e.clientX)}
                 onTouchStart={(e) => handleStart(e.touches[0].clientX)}
-                onTouchEnd={(e) => { handleEnd(e.changedTouches[0].clientX); startAutoplay(); }}
+                onTouchEnd={(e) => handleEnd(e.changedTouches[0].clientX)}
             >
                 <div className="cascade-slider_slides">
                     {slides.map((slide, index) => {
                         const slideClass = getSlideClasses(index, activeIndex, total, itemCount);
+                        const isActive = slideClass === 'now';
+
                         return (
                             <div
                                 key={slide.id}
                                 className={`cascade-slider_item ${slideClass}`}
-                                onClick={(e) => {
-                                    if (slideClass && slideClass !== 'now') {
-                                        e.preventDefault();
-                                        setActiveIndex(index);
-                                    }
+                                onClick={() => {
+                                    if (!isActive) setActiveIndex(index);
                                 }}
                             >
-                                <a href={slide.href} onClick={(e) => slideClass !== 'now' && e.preventDefault()}>
-                                    <img 
-                                        src={slide.src} 
+                                <a
+                                    href={slide.href}
+                                    onClick={(e) => {
+                                        if (!isActive) e.preventDefault();
+                                    }}
+                                    tabIndex={isActive ? 0 : -1}
+                                    aria-label={`Slide ${index + 1}`}
+                                >
+                                    <img
+                                        src={slide.src}
                                         alt={`Slide ${index + 1}`}
                                         draggable="false"
                                         onError={(e) => {
@@ -285,14 +313,23 @@ export default function CompleteThreeDCarousel({
                     <>
                         <button
                             className="cascade-slider_arrow cascade-slider_arrow-left rounded-full bg-black/40 text-white p-1 hover:bg-black/70 transition-colors"
-                            onClick={(e) => { e.stopPropagation(); navigate('prev'); }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigate('prev');
+                            }}
+                            aria-label="Previous slide"
                             type="button"
                         >
                             <ArrowLeftCircle size={32} />
                         </button>
+
                         <button
                             className="cascade-slider_arrow cascade-slider_arrow-right rounded-full bg-black/40 text-white p-1 hover:bg-black/70 transition-colors"
-                            onClick={(e) => { e.stopPropagation(); navigate('next'); }}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                navigate('next');
+                            }}
+                            aria-label="Next slide"
                             type="button"
                         >
                             <ArrowRightCircle size={32} />
