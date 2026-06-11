@@ -1,3 +1,7 @@
+/*Ensure you have installed the package
+or read our installation document. (go to lightswind.com/components/Installation)
+npm i lightswind@latest*/
+
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -10,15 +14,10 @@ export interface SparkleCursorProps {
   glow?: boolean;
 }
 
-export const SparkleCursor = ({ distance = 80, glow = false }: SparkleCursorProps) => { // Increased distance to 80, disabled glow for performance
+export const SparkleCursor = ({ distance = 50, glow = true }: SparkleCursorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Disable on mobile/touch devices entirely for performance
-    if (typeof window !== "undefined" && window.innerWidth < 768) {
-      return;
-    }
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -50,14 +49,7 @@ export const SparkleCursor = ({ distance = 80, glow = false }: SparkleCursorProp
     let parts: any[] = [];
     let glows: any[] = [];
 
-    // Throttle rendering for better FPS
-    let lastRenderTime = 0;
-
-    const render = (time: number) => {
-      // Throttle to roughly 30 FPS
-      if (time - lastRenderTime < 33) return;
-      lastRenderTime = time;
-
+    const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       for (const g of glows) {
@@ -129,21 +121,21 @@ export const SparkleCursor = ({ distance = 80, glow = false }: SparkleCursorProp
           b: gsap.utils.random(0.5, 1.5),
           r: gsap.utils.random(0, 359, 1),
           hue: gsap.utils.random(0, 359, 1),
-          size: gsap.utils.random(10, 25, 1), // Reduced max size
+          size: gsap.utils.random(10, 40, 1),
           scale: 1,
           alpha: 1,
         };
 
         const spin = gsap.to(newPart, {
           sy: newPart.sy < 0 ? 1 : -1,
-          duration: gsap.utils.random(0.2, 0.5),
-          repeat: gsap.utils.random(0, 5, 1),
+          duration: gsap.utils.random(0.1, 0.5),
+          repeat: gsap.utils.random(0, 10, 1),
         });
 
         gsap.to(newPart, {
-          duration: gsap.utils.random(0.5, 1.5), // Reduced duration
+          duration: gsap.utils.random(0.5, 2.5),
           r: newPart.r + gsap.utils.random(-45, 45, 1),
-          y: y + gsap.utils.random(50, 200, 1),
+          y: y + gsap.utils.random(50, 350, 1),
           alpha: 0,
           scale: 0,
           onComplete: () => {
@@ -169,7 +161,7 @@ export const SparkleCursor = ({ distance = 80, glow = false }: SparkleCursorProp
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[9999] hidden md:block" // Hidden on mobile via Tailwind
+      className="fixed inset-0 pointer-events-none z-[9999]"
       style={{
         width: "100vw",
         height: "100vh",

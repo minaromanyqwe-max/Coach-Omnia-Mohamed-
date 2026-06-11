@@ -9,6 +9,7 @@ import CompleteThreeDCarousel from "../[locale]/sections/imge/page"
 export default function Home() {
   return (
     <div className="flex flex-col gap-16 md:gap-32 w-full pt-10">
+      
       <HomePage/>
       <CoachProfile/>
       <ThreeDScrollTriggerRow/>

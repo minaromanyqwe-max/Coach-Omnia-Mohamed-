@@ -61,6 +61,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
               <ParticlesBackground height="100%" zIndex={0} />
             </div>
             <SparkleCursor distance={40} glow={true} />
+            
             <StyledComponentsRegistry>
               <div className="relative z-10 flex flex-col min-h-screen w-full">
                 <NavbarDemo />
