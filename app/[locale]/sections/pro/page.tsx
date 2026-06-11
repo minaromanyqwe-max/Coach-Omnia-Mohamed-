@@ -23,7 +23,7 @@ import {
   useVelocity,
 } from "framer-motion";
 import type { MotionValue } from "framer-motion";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 
 /* -------------------------
