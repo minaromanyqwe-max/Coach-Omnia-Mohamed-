@@ -26,12 +26,12 @@ const DEFAULT_SLIDES: Slide[] = [
     },
     {
         id: 2,
-        src: "/IMG_4630.jpeg",
+        src: "/IMG_4630.JPEG",
         href: '#slide2'
     },
     {
         id: 3,
-        src: "/IMG_7462.jpeg",
+        src: "/IMG_7462.JPEG",
         href: '#slide3'
     },
 ];
