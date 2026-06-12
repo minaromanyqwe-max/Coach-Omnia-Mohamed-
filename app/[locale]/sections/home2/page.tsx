@@ -9,6 +9,7 @@ import {
   FaTiktok,
 } from "react-icons/fa";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function HeroSection() {
   const t = useTranslations("Hero");
@@ -23,9 +24,12 @@ export default function HeroSection() {
         {/* الجانب الأيسر: الصورة مع الحاوية الزجاجية */}
         <div className="left">
           <div className="img-frame">
-            <img
+            <Image
               src="/img.jpeg"
               alt="Coach Omnia Mohamed"
+              width={390}
+              height={480}
+              priority
             />
           </div>
         </div>

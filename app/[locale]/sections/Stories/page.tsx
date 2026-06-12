@@ -2,6 +2,7 @@
 import React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const OMNIA_TEAM_IMAGES = [
   "WhatsApp Image 2026-05-25 at 12.54.09 AM.jpeg",
@@ -82,10 +83,12 @@ export default function OmniaTeam3DSlider({
           }}
         >
           {images.map((src, i) => (
-            <img
+            <Image
               key={i}
-              src={src}
+              src={`/${src}`}
               alt={`Transformation ${i}`}
+              width={288}
+              height={512}
               className={`col-start-1 row-start-1 object-cover rounded-xl md:rounded-2xl border border-slate-800 shadow-2xl shadow-amber-500/10 ${imageClassName}`}
               style={{
                 width: "var(--card-width)",

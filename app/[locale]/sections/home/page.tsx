@@ -3,6 +3,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 const CoachProfile = () => {
   const t = useTranslations("Profile");
@@ -14,9 +15,11 @@ const CoachProfile = () => {
         {/* الجانب الأيمن: الصورة الشخصية الرياضية للكوتش */}
         <div className="image-column">
           <div className="avatar-wrapper">
-            <img 
+            <Image 
               src="/WhatsApp Image 2026-05-26 at 12.07.33 PM.jpeg"
               alt="Coach Omnia Mohamed" 
+              width={320}
+              height={420}
               className="coach-avatar"
             />
             <div className="experience-badge">{t("experience")}</div>

@@ -18,6 +18,10 @@ export const SparkleCursor = ({ distance = 50, glow = true }: SparkleCursorProps
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Check if the device has a precision pointing device (mouse/stylus)
+    const hasPointer = window.matchMedia("(pointer: fine)").matches;
+    if (!hasPointer) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");

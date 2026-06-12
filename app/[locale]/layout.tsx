@@ -5,13 +5,12 @@ import { NavbarDemo } from "../compount/Navbar";
 import Footer from "../compount/footer/page";
 import { cn } from "@/lib/utils";
 import StyledComponentsRegistry from "@/lib/registry";
-import ParticlesBackground from "../[locale]/sections/cap/page";
-import SparkleCursor from "../[locale]/sections/star/page";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 import { ThemeProvider } from "../../components/theme-provider";
+import ClientEffects from "./sections/ClientEffects";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -57,10 +56,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             enableSystem
             disableTransitionOnChange
           >
-            <div className="fixed inset-0 w-full h-screen pointer-events-none z-0">
-              <ParticlesBackground height="100%" zIndex={0} />
-            </div>
-            <SparkleCursor distance={40} glow={true} />
+            <ClientEffects />
             
             <StyledComponentsRegistry>
               <div className="relative z-10 flex flex-col min-h-screen w-full">

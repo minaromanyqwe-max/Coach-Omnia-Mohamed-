@@ -2,6 +2,7 @@
 import { ArrowLeftCircle, ArrowRightCircle } from 'lucide-react';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 interface Slide {
     id: number;
@@ -307,13 +308,15 @@ export default function CompleteThreeDCarousel({
                                     tabIndex={isActive ? 0 : -1}
                                     aria-label={`Slide ${index + 1}`}
                                 >
-                                    <img
+                                    <Image
                                         src={slide.src}
                                         alt={`Slide ${index + 1}`}
+                                        width={280}
+                                        height={200}
                                         draggable="false"
-                                        onError={(e) => {
-                                            e.currentTarget.onerror = null;
-                                            e.currentTarget.src = `https://placehold.co/350x200/4F46E5/ffffff?text=Slide%20${index + 1}`;
+                                        style={{
+                                            objectFit: "cover",
+                                            borderRadius: "20px",
                                         }}
                                     />
                                 </a>
