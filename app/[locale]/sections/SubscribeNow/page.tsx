@@ -6,12 +6,6 @@ import styled, { keyframes } from "styled-components";
 import { useTranslations } from "next-intl";
 
 // ==========================================
-// Config — غيّر هنا فقط
-// ==========================================
-const WHATSAPP_NUMBER = "201551634503"; // الرقم الدولي بدون علامة + أو مسافات لإرسال فوري سليم
-const WHATSAPP_MSG = "مرحباً كوتش أمنية، لقد أتممت الدفع للتو وأود تفعيل اشتراكي وتجهيز خطتي التدريبية! 🎉";
-
-// ==========================================
 // Types
 // ==========================================
 interface CardProps {
@@ -20,12 +14,55 @@ interface CardProps {
 }
 
 // ==========================================
-// WhatsApp SVG Icon
+// Next Steps Info Card
 // ==========================================
-const WhatsAppIcon = () => (
-  <svg width={22} height={22} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-  </svg>
+const NextStepsCard = () => (
+  <div className="card-container info-container">
+    <div className="title-card">
+      <p>خطوات ما بعد الدفع ⚡</p>
+      <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 16v-4M12 8h.01" />
+      </svg>
+    </div>
+    <div className="card-content info-content">
+      <div className="info-header">
+        <span className="badge">سهل وسريع</span>
+        <h2>ماذا سيحدث فور إتمام الدفع؟</h2>
+        <p>رحلتك البدنية تبدأ فوراً بدون أي تعقيدات. إليك كيف نجهز خطتك:</p>
+      </div>
+
+      <div className="steps-wrapper">
+        <div className="step-card">
+          <div className="step-icon">1</div>
+          <div className="step-detail">
+            <h4>  سيتم ارسال رساله</h4>
+            <p>بمجرد إتمام عملية الدفع بنجاح، سيتم تلقائياً ارسال رساله تحويل +برجاءارسال وصل علي نفس رقم تحويل </p>
+          </div>
+        </div>
+
+        <div className="step-card">
+          <div className="step-icon">2</div>
+          <div className="step-detail">
+            <h4>تأكيد الاشتراك واستبيان التقييم</h4>
+            <p>ستصلك رسالة ترحيبية فورية مع نموذج تقييم شامل لجمع بياناتك وشكل يومك وهدفك البدني.</p>
+          </div>
+        </div>
+
+        <div className="step-card">
+          <div className="step-icon">3</div>
+          <div className="step-detail">
+            <h4>استلام برنامجك المخصص</h4>
+            <p>تستلم خطتك التدريبية والغذائية المخصصة لك بالكامل للبدء فوراً مع متابعة أسبوعية مستمرة.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="support-notice">
+        <p>💬 فريق الدعم والكوتش متواجدون معك خطوة بخطوة للإجابة على كافة استفساراتك.</p>
+      </div>
+    </div>
+  </div>
 );
 
 // ==========================================
@@ -145,63 +182,12 @@ const InternationalCard = ({ cartId, t }: CardProps) => (
 );
 
 // ==========================================
-// 3. WhatsApp Card
-// ==========================================
-const WhatsAppCard = ({ t }: { t: any }) => {
-  const [copied, setCopied] = useState(false);
-
-  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
-
-  const copyPhone = () => {
-    navigator.clipboard.writeText("+" + WHATSAPP_NUMBER);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const formattedPhone = "+20 155 163 4503";
-
-  return (
-    <div className="wa-card-container">
-      <div className="wa-inner">
-        <div className="wa-icon-wrap">
-          <WhatsAppIcon />
-        </div>
-        <span className="wa-badge">{t("waBadge")}</span>
-        <h2 className="wa-headline">{t("waHeadline")}</h2>
-        <p className="wa-body">
-          {t("waBody1")}{" "}
-          <strong>{t("waBodyStrong")}</strong>{" "}
-          {t("waBody2")}
-        </p>
-        <div className="wa-divider" />
-        <div className="wa-phone-row">
-          <span className="wa-phone-num">{formattedPhone}</span>
-          <button className="wa-copy-btn" onClick={copyPhone}>
-            {copied ? t("waCopied") : t("waCopy")}
-          </button>
-        </div>
-        <a 
-          href={waLink} 
-          target="_blank" 
-          rel="noreferrer" 
-          className="wa-btn"
-        >
-          <WhatsAppIcon />
-          {t("waBtn")}
-        </a>
-        <p className="wa-note">{t("waNote")}</p>
-      </div>
-    </div>
-  );
-};
-
-// ==========================================
-// 4. Loading Skeleton
+// 3. Loading Skeleton
 // ==========================================
 const LoadingSkeleton = ({ t }: { t: any }) => <div className="skeleton-box">{t("loading")}</div>;
 
 // ==========================================
-// 5. Main Component with Geo Detection
+// 4. Main Component with Geo Detection
 // ==========================================
 const CoachingCards = () => {
   const [isEgypt, setIsEgypt] = useState<boolean | null>(null);
@@ -214,40 +200,31 @@ const CoachingCards = () => {
         const countryCode: string = (data.country_code || "").toUpperCase();
         setIsEgypt(countryCode === "EG");
       })
-      .catch(() => setIsEgypt(false)); // في حال الفشل يوجه تلقائيا للدولي لحماية التجربة
+      .catch(() => setIsEgypt(false));
   }, []);
 
   return (
     <StyledWrapper id="pricing">
       <div className="page-layout">
-
         {isEgypt === null ? (
           <LoadingSkeleton t={t} />
         ) : (
-          <div className="grid-responsive">
-            
-            {/* الكارت الجغرافي المستهدف للأسعار */}
-            <div className="cards-wrapper">
-              {isEgypt === true ? (
-                <EgyptCard cartId="67464019af1e4e9766624e75" t={t} />
-              ) : (
-                <InternationalCard cartId="INTERNATIONAL_CART_ID" t={t} />
-              )}
-            </div>
-
-            {/* كارت التأكيد عبر الواتساب */}
-            <WhatsAppCard t={t} />
-
+          <div className="cards-grid">
+            {isEgypt === true ? (
+              <EgyptCard cartId="67464019af1e4e9766624e75" t={t} />
+            ) : (
+              <InternationalCard cartId="INTERNATIONAL_CART_ID" t={t} />
+            )}
+            <NextStepsCard />
           </div>
         )}
-
       </div>
     </StyledWrapper>
   );
 };
 
 // ==========================================
-// 6. Styled Components
+// 5. Styled Components
 // ==========================================
 const pulse = keyframes`
   0%, 100% { opacity: 0.5; }
@@ -259,29 +236,23 @@ const StyledWrapper = styled.section`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: transparent; /* لكي يتداخل مع الـ Particles في الخلفية */
+  background: transparent;
   padding: 80px 20px;
   font-family: var(--font-cairo), sans-serif;
 
-  /* ── Layout ── */
   .page-layout {
     width: 100%;
-    max-width: 1100px; /* توسيع العرض الإجمالي ليسمح بالتجاور */
+    max-width: 1020px;
     display: flex;
     justify-content: center;
   }
 
-  /* الاستجابة للشبكة (تصبح أفية على الشاشات الكبيرة ورأسية على الموبايل) */
-  .grid-responsive {
+  .cards-grid {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
     align-items: start;
-  }
-
-  .cards-wrapper {
-    width: 100%;
   }
 
   /* ── Skeleton ── */
@@ -302,7 +273,7 @@ const StyledWrapper = styled.section`
     animation: ${pulse} 1.5s ease-in-out infinite;
   }
 
-  /* ── Pricing Card ── */
+  /* ── Pricing & Info Card Container ── */
   .card-container {
     width: 100%;
     background: linear-gradient(
@@ -329,10 +300,9 @@ const StyledWrapper = styled.section`
     padding: 14px 24px;
     color: white;
     font-weight: 700;
-    /* Removed direction rtl */
   }
 
-  .title-card p { font-size: 14px; letter-spacing: 0.5px; }
+  .title-card p { font-size: 14px; letter-spacing: 0.5px; margin: 0; }
 
   .card-content {
     background: rgba(15, 17, 26, 0.93);
@@ -343,9 +313,96 @@ const StyledWrapper = styled.section`
     display: flex;
     flex-direction: column;
     gap: 24px;
-    /* Removed direction rtl */
+    height: calc(100% - 2px);
   }
 
+  /* ── Info Card Specifics ── */
+  .info-header .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(47, 124, 248, 0.15);
+    border: 1px solid rgba(47, 124, 248, 0.3);
+    color: #00c6ff;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .info-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: #fff;
+  }
+
+  .info-header p {
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .steps-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .step-card {
+    display: flex;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 14px;
+    border-radius: 16px;
+    align-items: flex-start;
+  }
+
+  .step-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7b2ff7, #2f7cf8);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .step-detail h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+
+  .step-detail p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+
+  .support-notice {
+    background: rgba(37, 211, 102, 0.08);
+    border: 1px solid rgba(37, 211, 102, 0.2);
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+
+  .support-notice p {
+    margin: 0;
+    font-size: 12.5px;
+    color: #25d366;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* ── Card UI Features ── */
   .title {
     font-size: 24px;
     font-weight: 800;
@@ -472,165 +529,13 @@ const StyledWrapper = styled.section`
     margin: 0;
   }
 
-  /* ── WhatsApp Card ── */
-  .wa-card-container {
-    width: 100%;
-    background: linear-gradient(
-      135deg,
-      rgba(37, 211, 102, 0.45),
-      rgba(18, 140, 126, 0.45)
-    );
-    padding: 2px;
-    border-radius: 32px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(37, 211, 102, 0.1);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-  }
-
-  .wa-card-container:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(37, 211, 102, 0.25);
-  }
-
-  .wa-inner {
-    background: rgba(15, 17, 26, 0.93);
-    backdrop-filter: blur(20px);
-    border-radius: 30px;
-    padding: 40px 24px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    /* Removed direction rtl */
-  }
-
-  .wa-icon-wrap {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: #25D366;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    flex-shrink: 0;
-    box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
-  }
-
-  .wa-badge {
-    background: rgba(37, 211, 102, 0.1);
-    border: 1px solid rgba(37, 211, 102, 0.25);
-    color: #25D366;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 6px 16px;
-    border-radius: 100px;
-  }
-
-  .wa-headline {
-    color: #fff;
-    font-size: 24px;
-    font-weight: 800;
-    margin: 0;
-  }
-
-  .wa-body {
-    color: #94a3b8;
-    font-size: 14px;
-    line-height: 1.8;
-    margin: 0;
-  }
-
-  .wa-body strong {
-    color: #fff;
-    font-weight: 700;
-  }
-
-  .wa-divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.06);
-  }
-
-  .wa-phone-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
-    padding: 14px 18px;
-    width: 100%;
-    justify-content: center;
-    direction: ltr;
-  }
-
-  .wa-phone-num {
-    color: #fff;
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    flex: 1;
-    text-align: center;
-  }
-
-  .wa-copy-btn {
-    background: rgba(37, 211, 102, 0.12);
-    border: 1px solid rgba(37, 211, 102, 0.25);
-    color: #25D366;
-    border-radius: 10px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
-    white-space: nowrap;
-  }
-
-  .wa-copy-btn:hover {
-    background: rgba(37, 211, 102, 0.22);
-  }
-
-  .wa-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    background: #25D366;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 800;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    /* Removed direction rtl */
-  }
-
-  .wa-btn:hover {
-    background: #1ebe5d;
-    transform: scale(1.015);
-    box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
-  }
-
-  .wa-note {
-    color: #64748b;
-    font-size: 11.5px;
-    margin: 0;
-  }
-
-  /* ── Responsive Media Queries ── */
-  @media (max-width: 992px) {
-    padding: 60px 20px;
-
-    .grid-responsive {
-      grid-template-columns: 1fr; /* تترتب الكروت فوق بعضها على الأجهزة المتوسطة والصغيرة */
-      gap: 32px;
-      max-width: 480px; /* الحفاظ على مظهر متناسق ومريح في شاشات الموبايل والتابلت */
-      margin: 0 auto;
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+    .page-layout {
+      max-width: 520px;
     }
   }
 
@@ -642,10 +547,6 @@ const StyledWrapper = styled.section`
     .price-box h2 { font-size: 22px; }
     .inter-card .price-box h2 { font-size: 24px; }
     .option p, .features-box p { font-size: 13px; }
-    .wa-inner { padding: 32px 16px; }
-    .wa-headline { font-size: 21px; }
-    .wa-phone-num { font-size: 15px; }
-    .wa-btn { font-size: 15px; }
   }
 `;
 

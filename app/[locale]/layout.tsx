@@ -60,6 +60,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
             
             <StyledComponentsRegistry>
               <div className="relative z-10 flex flex-col min-h-screen w-full">
+                
                 <NavbarDemo />
                 <main className="flex-grow flex flex-col w-full pb-20">
                   {children}
