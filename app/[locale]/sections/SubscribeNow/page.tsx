@@ -13,6 +13,11 @@ interface CardProps {
   t: any;
 }
 
+interface CoachingCardsProps {
+  // جاي من السيرفر (Vercel geo header). null = مش متاح (مثلاً على localhost)
+  initialIsEgypt?: boolean | null;
+}
+
 // ==========================================
 // Next Steps Info Card
 // ==========================================
@@ -36,8 +41,25 @@ const NextStepsCard = () => (
         <div className="step-card">
           <div className="step-icon">1</div>
           <div className="step-detail">
-            <h4>  سيتم ارسال رساله</h4>
-            <p>بمجرد إتمام عملية الدفع بنجاح، سيتم تلقائياً ارسال رساله تحويل +برجاءارسال وصل علي نفس رقم تحويل </p>
+            <h4>ابعتلنا إيصال الدفع على انستجرام</h4>
+            <p>
+              بعد إتمام عملية التحويل، برجاء إرسال صورة إيصال الدفع (سكرين شوت) على حسابنا على
+              انستجرام مباشرة، عشان نأكد اشتراكك ونبدأ نجهزلك خطتك على طول.
+            </p>
+            <Link
+              href="https://www.instagram.com/omniamohameed__?igsh=cWZ4NXd0MmJwcDF3&utm_source=qr"
+              target="_blank"
+              rel="noreferrer"
+              className="ig-send-btn"
+              aria-label="ابعت الإيصال على انستجرام"
+            >
+              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <rect x="2" y="2" width="20" height="20" rx="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+              ابعت الإيصال دلوقتي
+            </Link>
           </div>
         </div>
 
@@ -189,19 +211,36 @@ const LoadingSkeleton = ({ t }: { t: any }) => <div className="skeleton-box">{t(
 // ==========================================
 // 4. Main Component with Geo Detection
 // ==========================================
-const CoachingCards = () => {
-  const [isEgypt, setIsEgypt] = useState<boolean | null>(null);
+const CoachingCards = ({ initialIsEgypt = null }: CoachingCardsProps) => {
+  // لو السيرفر جابلنا القيمة (من Vercel geo header)، نستخدمها فوراً من غير fetch أو فلاش
+  const [isEgypt, setIsEgypt] = useState<boolean | null>(initialIsEgypt);
   const t = useTranslations("Pricing");
 
   useEffect(() => {
-    fetch("https://ipapi.co/json/")
-      .then((res) => res.json())
-      .then((data) => {
-        const countryCode: string = (data.country_code || "").toUpperCase();
-        setIsEgypt(countryCode === "EG");
-      })
-      .catch(() => setIsEgypt(false));
-  }, []);
+    // لو عندنا نتيجة من السيرفر خلاص، متعملش أي حاجة تانية
+    if (initialIsEgypt !== null) return;
+
+    // Fallback: بس لو السيرفر مقدرش يحدد الدولة (زي localhost وقت التطوير)
+    let cancelled = false;
+
+    const detectCountry = async () => {
+      try {
+        const res = await fetch("https://ipapi.co/json/");
+        const data = await res.json();
+        if (!cancelled) {
+          const countryCode: string = (data.country_code || "").toUpperCase();
+          setIsEgypt(countryCode === "EG");
+        }
+      } catch {
+        if (!cancelled) setIsEgypt(false);
+      }
+    };
+
+    detectCountry();
+    return () => {
+      cancelled = true;
+    };
+  }, [initialIsEgypt]);
 
   return (
     <StyledWrapper id="pricing">
@@ -373,6 +412,11 @@ const StyledWrapper = styled.section`
     flex-shrink: 0;
   }
 
+  .step-detail {
+    display: flex;
+    flex-direction: column;
+  }
+
   .step-detail h4 {
     margin: 0 0 4px 0;
     font-size: 14px;
@@ -385,6 +429,27 @@ const StyledWrapper = styled.section`
     font-size: 12.5px;
     color: #94a3b8;
     line-height: 1.6;
+  }
+
+  .ig-send-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #7b2ff7, #2f7cf8, #00c6ff);
+    color: #fff;
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 700;
+    width: fit-content;
+    transition: all 0.3s ease;
+  }
+
+  .ig-send-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(47, 124, 248, 0.35);
   }
 
   .support-notice {
